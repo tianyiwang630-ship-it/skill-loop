@@ -1,101 +1,22 @@
 # Loop Skill
 
-中文 | English
+[中文](#中文) | [English](#english)
 
-## 中文简介
+## 中文
 
-`loop` 是一个面向通用 agent 的多轮执行与思考 skill。
+### 概览
 
-它的目标不是把 agent 变成死板的流程机，而是在需要多轮推进的任务里，帮助 agent：
+这个仓库提供一个可复用的 agent skill 包：`loop`。
 
-- 更贴近用户真实意图
-- 避免陷入单一路径依赖
-- 把多轮迭代转化为真正的认知收益，而不是重复劳动
+它面向需要多轮推进任务的通用 agent。它的目标不是把 agent 变成刚性的流程机，而是给 agent 一个轻量的迭代思考结构，让多轮执行更贴近需求，也更不容易陷入低质量重复。
 
-这个 skill 不绑定代码场景，也不依赖特定平台。它适用于写作、分析、研究、整理、规划、比较、翻译，以及其他适合多轮推进的任务。
+核心设计目标：
 
-## English Overview
+- 提高对用户真实意图的贴合度
+- 降低单一路径依赖
+- 让多轮执行产生累积认知收益，而不是空转
 
-`loop` is a multi-round execution and thinking skill for general-purpose agents.
-
-Its purpose is not to turn an agent into a rigid workflow machine. Instead, it helps the agent during iterative tasks to:
-
-- stay closer to the user's actual intent
-- avoid getting trapped in a single path of reasoning
-- turn multiple rounds into genuine learning instead of repetitive churn
-
-This skill is not code-specific and is not tied to a single platform. It can be used for writing, analysis, research, planning, comparison, translation, and other tasks that benefit from iteration.
-
-## 核心理念
-
-这个 skill 的核心不是“多跑几轮”，而是让每一轮都更有价值。
-
-它主要依赖三个机制：
-
-- 强制反思：提升命中需求的概率
-- 视角切换：避免单一路径依赖
-- 横向比较：把多轮变成学习，而不是重复
-
-在设计上，这三者被写成默认思考流程，而不是沉重的纪律约束。
-
-## Core Ideas
-
-The point of this skill is not merely to "run more rounds", but to make each round more useful.
-
-It centers on three mechanisms:
-
-- Reflection: increase the chance of matching the real need
-- Perspective shifting: reduce single-path dependence
-- Cross-round comparison: turn iteration into learning rather than repetition
-
-These are implemented as a default thinking structure, not as heavy-handed discipline rules.
-
-## Skill Flow
-
-每一轮 loop 大致遵循以下结构：
-
-1. Execute
-2. Reflect
-3. Shift Perspective
-4. Compare Across Rounds
-5. Verify
-6. Judge
-
-This structure is intentionally lightweight. The agent is encouraged to use it as a thinking scaffold, not as a theatrical ritual.
-
-## 适用场景
-
-- 打磨同一份内容，逐轮提升质量
-- 分轮覆盖不同子主题，逐步补全内容
-- 从不同角度探索多个方案，再进行比较
-- 对复杂任务进行多轮推进，而不是一次性给出单一路径答案
-
-## Good Fit
-
-- refining the same artifact over multiple rounds
-- accumulating coverage section by section
-- exploring alternatives from different angles
-- handling open-ended tasks that benefit from repeated improvement instead of one-shot output
-
-## 仓库内容
-
-当前仓库包含一个 skill 包：
-
-- `skills/loop/SKILL.md`: 主 skill 定义
-- `skills/loop/references/patterns.md`: 不同 loop 模式的说明
-- `skills/loop/references/troubleshooting.md`: 当 loop 卡住、漂移或假进展时的处理方法
-
-## Repository Contents
-
-This repository currently contains one skill package:
-
-- `skills/loop/SKILL.md`: main skill definition
-- `skills/loop/references/patterns.md`: guidance for different loop patterns
-- `skills/loop/references/troubleshooting.md`: recovery strategies for stuck loops, drift, and false progress
-
-## 推荐目录结构
-
-如果你准备把它发布到 GitHub 并作为可复用 skill 仓库维护，更推荐使用下面的结构：
+### 仓库结构
 
 ```text
 repo/
@@ -108,95 +29,299 @@ repo/
         troubleshooting.md
 ```
 
-如果仓库永远只包含这一个 skill，那么保持单 skill 的简洁结构也完全可以。
+文件职责：
 
-## Recommended Layout
+- `skills/loop/SKILL.md`
+  主 skill 定义，包含 loop 的基本约束、回合结构、报告格式和整体行为。
+- `skills/loop/references/patterns.md`
+  说明不同 loop 模式，包括 refinement、accumulation、exploration。
+- `skills/loop/references/troubleshooting.md`
+  处理 loop 常见失效模式，例如假进展、过早结束、跑偏和卡住。
 
-If you plan to publish and maintain this as a reusable GitHub skill repository, this structure is recommended:
+### 设计模型
+
+`loop` 更适合作为“思考支架”来理解，而不是任务编排器。
+
+它鼓励 agent 在每一轮里走一遍轻量流程：
+
+1. 执行
+2. 反思
+3. 视角切换
+4. 与前一轮横向比较
+5. 验证
+6. 判断是否继续
+
+重点不在流程感，而在于让回合之间真的发生认知修正。
+
+### 设计动机
+
+很多通用 agent 已经“会循环”，但默认循环常见三个问题：
+
+- 只围绕当前答案打磨，却不重新看目标
+- 沿着同一条推理路径小修小补
+- 把“看起来很忙”误判成“真的有进展”
+
+这个 skill 用三件事来对抗这些问题：
+
+- 反思
+  检查哪里可能误解了需求，哪里最薄弱。
+- 视角切换
+  在合适的时候换一个角度重新看问题。
+- 横向比较
+  判断这一轮是否真的比上一轮更好，而不只是形式不同。
+
+### 安装方式
+
+把 `skills/loop` 目录复制或软链接到你的 agent skills 目录中。
+
+示例目标结构：
 
 ```text
-repo/
-  README.md
-  skills/
-    loop/
-      SKILL.md
-      references/
-        patterns.md
-        troubleshooting.md
+<agent-skills-root>/
+  loop/
+    SKILL.md
+    references/
+      patterns.md
+      troubleshooting.md
 ```
 
-If the repository will always contain just this single skill, a simpler one-skill layout is also perfectly fine.
+如果你的平台对 skills 根目录有不同要求，也建议保留 `loop/` 内部结构不变，这样相对引用文件还能正常工作。
 
-## 使用方式
+### 调用建议
 
-把这个 skill 放到你的 agent skills 目录中，然后在需要时显式调用它，例如：
+这个 skill 更适合显式调用，用在那些明显受益于多轮推进的任务上。
+
+示例：
 
 ```text
 Use the loop skill to refine this draft in 3 rounds.
 ```
 
 ```text
+Use the loop skill to explore multiple approaches before choosing one.
+```
+
+```text
 用 loop skill，分 4 轮从不同角度分析这个方案。
 ```
 
-这个 skill 特别适合以下类型的请求：
+适合的任务包括：
 
-- “请多轮优化这段内容”
-- “试几个不同方向再比较”
-- “不要只给一个答案，分轮推进”
+- 对同一份内容逐轮打磨
+- 分轮研究、整理、补全内容
+- 从多个方向探索方案
+- 一次性回答往往不够深的开放性任务
 
-## Usage
+### 集成建议
 
-Place this skill in your agent's skills directory and invoke it explicitly when a task would benefit from iteration, for example:
+如果你要把它接入更大的 skills 体系，建议把它当作“通用迭代层”，而不是领域 skill。
+
+更合理的分工是：
+
+- 领域 skill 决定“什么叫做好结果”
+- `loop` 决定“多轮怎么推进才更有效”
+
+也就是说，`loop` 更适合作为补充层，而不是替代任务本身。
+
+### 维护建议
+
+如果你后续继续演化这个 skill，建议保护下面这些特性：
+
+- 保持轻量
+- 不要把反思写成机械 ritual
+- 不要让每轮视角切换都显得刻意
+- 保留“真实进展”和“假进展”的区分
+
+通常不建议的方向：
+
+- 增加太多强制确认
+- 把 skill 膨胀成完整状态机
+- 强行要求每轮都演戏式切 persona
+- 把它过度收窄到代码场景
+
+### 扩展点
+
+如果你要继续扩展这个仓库，比较安全的修改点包括：
+
+- 调整每轮报告格式
+- 在 `patterns.md` 里细化不同 loop 模式
+- 在 `troubleshooting.md` 里补充恢复策略
+- 在 `SKILL.md` 里微调触发描述
+
+建议尽量保持 loop 的核心概念稳定，把变化放在外围指导层。
+
+### 贡献建议
+
+如果你准备继续公开维护这个仓库，比较好的提交说明方式是同时写清楚：
+
+- 你观察到了什么失效模式
+- 你改了 skill 的哪一部分
+- 你预期 agent 会出现什么新行为
+
+这样这个仓库会更贴近真实 agent 行为，而不是停留在抽象流程设计上。
+
+### License
+
+发布前补充适合你的开源协议，例如 MIT。
+
+## English
+
+### Overview
+
+This repository contains a reusable agent skill package named `loop`.
+
+The skill is designed for general-purpose agents that need to work in multiple rounds instead of producing a one-shot answer. Its goal is not to enforce a rigid workflow, but to give the agent a lightweight iterative thinking structure that improves task fit and reduces shallow repetition.
+
+Core design goals:
+
+- improve alignment with the user's actual intent
+- reduce single-path dependence during iteration
+- turn multiple rounds into accumulated learning instead of churn
+
+### Repository Layout
 
 ```text
-Use the loop skill to improve this draft in 3 rounds.
+repo/
+  README.md
+  skills/
+    loop/
+      SKILL.md
+      references/
+        patterns.md
+        troubleshooting.md
+```
+
+File roles:
+
+- `skills/loop/SKILL.md`
+  Main skill definition. Contains the loop contract, round structure, reporting format, and high-level behavior.
+- `skills/loop/references/patterns.md`
+  Describes the main loop styles: refinement, accumulation, and exploration.
+- `skills/loop/references/troubleshooting.md`
+  Covers failure modes such as false progress, premature pass, drift, and getting stuck.
+
+### Mental Model
+
+`loop` is best understood as a thinking scaffold, not an orchestrator.
+
+The skill encourages each round to move through a lightweight sequence:
+
+1. Execute
+2. Reflect
+3. Shift perspective
+4. Compare against previous rounds
+5. Verify
+6. Judge whether to continue
+
+The value comes from better thinking between rounds, not from ceremony.
+
+### Why This Skill Exists
+
+Many general agents can already iterate, but default iteration often has three weaknesses:
+
+- it optimizes the current answer without revisiting the real goal
+- it keeps following the same reasoning path with small wording changes
+- it mistakes visible activity for real progress
+
+This skill addresses those weaknesses with three built-in ideas:
+
+- Reflection
+  Ask what may be misread, weak, or underfit.
+- Perspective shifting
+  Revisit the same work from a different angle when useful.
+- Cross-round comparison
+  Check whether the new round is materially better, not merely different.
+
+### Installation
+
+Copy or symlink the `skills/loop` directory into your agent's skill directory.
+
+Example target layout:
+
+```text
+<agent-skills-root>/
+  loop/
+    SKILL.md
+    references/
+      patterns.md
+      troubleshooting.md
+```
+
+If your platform expects a different root structure, keep the internal `loop/` folder intact so the relative reference files still resolve correctly.
+
+### Invocation
+
+This skill is designed to be invoked explicitly when a task benefits from multi-round work.
+
+Examples:
+
+```text
+Use the loop skill to refine this draft in 3 rounds.
 ```
 
 ```text
-Use the loop skill to explore three different directions for this idea.
+Use the loop skill to explore multiple approaches before choosing one.
 ```
 
-It works especially well for requests like:
+```text
+Use the loop skill to analyze this plan from different angles over 4 rounds.
+```
 
-- "improve this over several rounds"
-- "try different directions and compare them"
-- "don't give a one-shot answer; iterate"
+Good fits:
 
-## 设计取向
+- iterative refinement of one artifact
+- research or synthesis done section by section
+- exploration of alternatives
+- open-ended tasks where one-shot output is usually too shallow
 
-这个项目更接近一种通用 agent 的思考增强层，而不是任务编排器。
+### Integration Notes
 
-它不追求：
+When integrating this skill into a broader skill ecosystem, treat it as a general iterative wrapper, not as a domain skill.
 
-- 复杂的状态机
-- 沉重的交互确认
-- 对所有任务一刀切的硬约束
+Recommended usage pattern:
 
-它更重视：
+- let domain-specific skills define what good work looks like
+- let `loop` define how multi-round improvement happens
 
-- 在多轮任务中维持目标感
-- 用轻量反思修正方向
-- 用不同视角打开思路
-- 用跨轮比较识别真实进展
+In other words, `loop` should usually complement another task or domain instruction rather than replace it.
 
-## Design Philosophy
+### Maintenance Guidelines
 
-This project is closer to a thinking amplifier for general agents than to a strict task orchestrator.
+If you evolve this skill, protect these properties:
 
-It does not aim for:
+- keep the loop lightweight
+- avoid turning reflection into repetitive ritual
+- avoid making perspective shifts feel forced in every round
+- preserve the distinction between meaningful progress and false progress
 
-- complex state machines
-- heavy confirmation rituals
-- rigid enforcement for every task
+Changes that often make the skill worse:
 
-It does aim for:
+- adding too many mandatory confirmations
+- expanding the skill into a full task state machine
+- forcing dramatic persona-switching every round
+- overfitting the skill to coding tasks only
 
-- preserving task direction across rounds
-- using lightweight reflection to self-correct
-- widening thought through perspective shifts
-- recognizing real progress through cross-round comparison
+### Extension Points
 
-## License
+If you want to adapt this repository, the safest extension points are:
 
-You can add the license of your choice before publishing, such as MIT.
+- adjusting the per-round report format
+- refining pattern guidance in `patterns.md`
+- improving recovery heuristics in `troubleshooting.md`
+- tightening or loosening the invocation description in `SKILL.md`
+
+Try to keep the core loop concept stable while evolving guidance around it.
+
+### Contributing
+
+If you publish improvements, it helps to include:
+
+- what failure mode you observed
+- what change you made to the skill
+- what new behavior you expect from agents
+
+This keeps the repository grounded in real agent behavior rather than abstract process theory.
+
+### License
+
+Add the license that matches your publishing plan before release, such as MIT.
